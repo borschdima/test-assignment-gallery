@@ -15,7 +15,7 @@ const notify = (type, message) => {
     });
 };
 
-const ControlPanel = ({ onLoadImage, onGroupHandler, isGrouped }) => {
+const ControlPanel = ({ onLoadImage, onGroupHandler, onClearHandler, isGrouped }) => {
     const [search, setSearch] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -43,6 +43,11 @@ const ControlPanel = ({ onLoadImage, onGroupHandler, isGrouped }) => {
         }
     };
 
+    const onClear = () => {
+        setSearch("");
+        onClearHandler();
+    };
+
     return (
         <div className="control-panel">
             <ToastContainer />
@@ -51,7 +56,7 @@ const ControlPanel = ({ onLoadImage, onGroupHandler, isGrouped }) => {
                 <MDBBtn color="success" size="sm" onClick={onLoadHandler} disabled={loading}>
                     {loading ? "Загрузка..." : "Загрузить"}
                 </MDBBtn>
-                <MDBBtn color="danger" size="sm" onClick={() => setSearch("")}>
+                <MDBBtn color="danger" size="sm" onClick={onClear}>
                     Очистить
                 </MDBBtn>
                 <MDBBtn color="info" size="sm" onClick={onGroupHandler}>

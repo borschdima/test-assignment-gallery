@@ -11,6 +11,10 @@ function App() {
         setIsGrouped(!isGrouped);
     };
 
+    const onClearHandler = () => {
+        setImages([]);
+    };
+
     const onLoadImage = (imgUrl, tag) => {
         const ImageItems = [...images];
         ImageItems.unshift({ imgUrl, tag });
@@ -20,7 +24,7 @@ function App() {
     return (
         <main className="App">
             <MDBContainer>
-                <ControlPanel onGroupHandler={onGroupHandler} onLoadImage={(imgUrl, tag) => onLoadImage(imgUrl, tag)} isGrouped={isGrouped} />
+                <ControlPanel onGroupHandler={onGroupHandler} onClearHandler={onClearHandler} onLoadImage={(imgUrl, tag) => onLoadImage(imgUrl, tag)} isGrouped={isGrouped} />
                 <Gallery images={images} isGrouped={isGrouped} />
             </MDBContainer>
         </main>
