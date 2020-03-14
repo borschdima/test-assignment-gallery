@@ -1,8 +1,15 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 
 import "./Gallery.scss";
 
-const Gallery = ({ images, isGrouped }) => {
+const Gallery = ({ images, isGrouped, onChangeSearchHandler }) => {
+    const imageClickHandler = useCallback(
+        image => {
+            onChangeSearchHandler(image.dataset.tag);
+        },
+        [onChangeSearchHandler]
+    );
+
     const gallery = useMemo(() => {
         if (isGrouped) {
             // Collect all tags we have
@@ -20,7 +27,7 @@ const Gallery = ({ images, isGrouped }) => {
                             .filter(img => img.tag === tag)
                             .map(({ imgUrl, tag }, index) => (
                                 <li className="gallery__item" key={index}>
-                                    <img className="gallery__img" src={imgUrl} data-tag={tag} alt="some gif" />
+                                    <img className="gallery__img" src={imgUrl} data-tag={tag} alt="some gif" onClick={e => imageClickHandler(e.target)} />
                                 </li>
                             ))}
                     </ul>
@@ -32,15 +39,16 @@ const Gallery = ({ images, isGrouped }) => {
                 <ul className="gallery__images">
                     {images.map(({ imgUrl, tag }, index) => (
                         <li className="gallery__item" key={index}>
-                            <img className="gallery__img" src={imgUrl} data-tag={tag} alt="some gif" />
+                            <img className="gallery__img" src={imgUrl} data-tag={tag} alt="some gif" onClick={e => imageClickHandler(e.target)} />
                         </li>
                     ))}
                 </ul>
             );
         }
-    }, [images, isGrouped]);
+    }, [images, isGrouped, imageClickHandler]);
 
     return <div className="gallery">{gallery}</div>;
+    // return <img className="gallery__img" src="" data-tag="{tag}" alt="some gif" onClick={e => imageClickHandler(e.target)} />;
 };
 
 export default Gallery;

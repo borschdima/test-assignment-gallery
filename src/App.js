@@ -6,13 +6,19 @@ import Gallery from "./components/Gallery/Gallery";
 function App() {
     const [images, setImages] = useState([]);
     const [isGrouped, setIsGrouped] = useState(false);
+    const [searchValue, setSearchValue] = useState("");
 
     const onGroupHandler = () => {
         setIsGrouped(!isGrouped);
     };
 
     const onClearHandler = () => {
+        setSearchValue("");
         setImages([]);
+    };
+
+    const onChangeSearchHandler = value => {
+        setSearchValue(value);
     };
 
     const onLoadImage = (imgUrl, tag) => {
@@ -24,8 +30,15 @@ function App() {
     return (
         <main className="App">
             <MDBContainer>
-                <ControlPanel onGroupHandler={onGroupHandler} onClearHandler={onClearHandler} onLoadImage={(imgUrl, tag) => onLoadImage(imgUrl, tag)} isGrouped={isGrouped} />
-                <Gallery images={images} isGrouped={isGrouped} />
+                <ControlPanel
+                    onGroupHandler={onGroupHandler}
+                    onClearHandler={onClearHandler}
+                    onChangeSearchHandler={value => onChangeSearchHandler(value)}
+                    onLoadImage={(imgUrl, tag) => onLoadImage(imgUrl, tag)}
+                    isGrouped={isGrouped}
+                    searchValue={searchValue}
+                />
+                <Gallery images={images} isGrouped={isGrouped} onChangeSearchHandler={value => onChangeSearchHandler(value)} />
             </MDBContainer>
         </main>
     );

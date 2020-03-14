@@ -15,17 +15,16 @@ const notify = (type, message) => {
     });
 };
 
-const ControlPanel = ({ onLoadImage, onGroupHandler, onClearHandler, isGrouped }) => {
-    const [search, setSearch] = useState("");
+const ControlPanel = ({ onLoadImage, onGroupHandler, onClearHandler, onChangeSearchHandler, isGrouped, searchValue }) => {
     const [loading, setLoading] = useState(false);
 
     const onLoadHandler = async () => {
-        if (!search) {
+        if (!searchValue) {
             notify("info", "Заполните поле поиска!");
         } else {
             setLoading(true);
             try {
-                const response = await fetch(`https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=${search}`);
+                const response = await fetch(`https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=${searchValue}`);
                 const { data } = await response.json();
 
                 if (Array.isArray(data)) {
@@ -33,7 +32,7 @@ const ControlPanel = ({ onLoadImage, onGroupHandler, onClearHandler, isGrouped }
                     setLoading(false);
                     return;
                 } else {
-                    onLoadImage(data.image_url, search);
+                    onLoadImage(data.image_url, searchValue);
                 }
             } catch (error) {
                 notify("error", "Произошла http ошибка!");
@@ -43,20 +42,15 @@ const ControlPanel = ({ onLoadImage, onGroupHandler, onClearHandler, isGrouped }
         }
     };
 
-    const onClear = () => {
-        setSearch("");
-        onClearHandler();
-    };
-
     return (
         <div className="control-panel">
             <ToastContainer />
-            <MDBInput label="Поиск по тегу" value={search} className="control-panel__search" onChange={e => setSearch(e.target.value)} />
+            <MDBInput label="Поиск по тегу" value={searchValue} className="control-panel__search" onChange={e => onChangeSearchHandler(e.target.value)} />
             <div className="control-panel__buttons mx-3">
                 <MDBBtn color="success" size="sm" onClick={onLoadHandler} disabled={loading}>
                     {loading ? "Загрузка..." : "Загрузить"}
                 </MDBBtn>
-                <MDBBtn color="danger" size="sm" onClick={onClear}>
+                <MDBBtn color="danger" size="sm" onClick={onClearHandler}>
                     Очистить
                 </MDBBtn>
                 <MDBBtn color="info" size="sm" onClick={onGroupHandler}>
