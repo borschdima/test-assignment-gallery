@@ -10,7 +10,7 @@
         "react-toastify": "^5.5.0"
     },
     "devDependencies": {
-        "node-sass": "^4.13.1"
+        "node-sass": "^7.0.0"
     },
     "scripts": {
         "start": "react-scripts start",
